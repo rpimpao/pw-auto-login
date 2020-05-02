@@ -24,7 +24,7 @@ build_script:
   # Generate Makefile from .pro file, and put it into build dir
   - qmake %program%.pro -o build/Makefile
   - cd build
-  - jom
+  - nmake
 
 after_build:
   - md deploy
