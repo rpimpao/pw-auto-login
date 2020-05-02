@@ -1,0 +1,34 @@
+version: 1.0.{build}
+
+environment:
+  matrix:
+  - program: pw-auto-login
+    name: win32
+    platform: amd64_x86
+    qt: msvc2017
+  - program: pw-auto-login
+    name: win64
+    platform: amd64
+    qt: msvc2017_64
+
+init:
+  # Add Qt binaries (qmake, jom, windeployqt) to PATH 
+  - set PATH=C:\Qt\5.14.2\%qt%\bin;%PATH%
+  # Properly set VS environment variables according to the platform
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" %platform%
+
+before_build:
+  - md build
+
+build_script:
+  # Generate Makefile from .pro file, and put it into build dir
+  - qmake %program%.pro -o build/Makefile
+  - cd build
+  - jom
+
+after_build:
+  - md deploy
+  - cd deploy
+  - move ..\release\%program%.exe .
+  - windeployqt --no-compiler-runtime %program%.exe
+  - 7z a PwAutoLogin_%name%.zip *
