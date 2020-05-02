@@ -32,6 +32,7 @@ after_build:
   - move ..\release\%program%.exe .
   - windeployqt --no-compiler-runtime %program%.exe
   - 7z a PwAutoLogin_%name%.zip *
+  - move PwAutoLogin_%name%.zip %APPVEYOR_BUILD_FOLDER%
 
 artifacts:
   - path: PwAutoLogin_%name%.zip
