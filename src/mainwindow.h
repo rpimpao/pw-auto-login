@@ -24,6 +24,7 @@ private:
     CharData m_newCharData;
 
 private slots:
+    void openFileDialog();
     void updateCharAccount();
     void updateCharPassword();
     void updateCharName();

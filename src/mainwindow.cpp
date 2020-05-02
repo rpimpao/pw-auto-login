@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_newCharData()
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Widget);
 
     ui->charsTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->charsTableView->verticalHeader()->hide();
@@ -23,6 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupConnections()
 {
+    connect(ui->elementClientButton, &QPushButton::clicked, this, &MainWindow::openFileDialog);
     connect(ui->accountLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharAccount);
     connect(ui->passwordLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharPassword);
     connect(ui->charLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharName);
@@ -31,6 +34,14 @@ void MainWindow::setupConnections()
 }
 
 // ------------ SLOTS ------------
+void MainWindow::openFileDialog()
+{
+    QString elementClientPath = QFileDialog::getOpenFileName(this,
+                                                             tr("Buscar ElementClient"), "C:/",
+                                                             tr("ElementClient (ElementClient.exe)"));
+    ui->elementClientLineEdit->setText(elementClientPath);
+}
+
 void MainWindow::updateCharAccount()
 {
     m_newCharData.setAccount(ui->accountLineEdit->text());
