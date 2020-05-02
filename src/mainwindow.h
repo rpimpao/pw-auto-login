@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "charmodel.h"
+#include "chardata.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,7 +18,15 @@ public:
     ~MainWindow();
 
 private:
+    void setupConnections();
     Ui::MainWindow *ui;
     CharModel* m_model;
+    CharData m_newCharData;
+
+private slots:
+    void updateCharAccount();
+    void updateCharPassword();
+    void updateCharName();
+    void addChar();
 };
 #endif // MAINWINDOW_H
