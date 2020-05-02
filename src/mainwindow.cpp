@@ -27,6 +27,7 @@ void MainWindow::setupConnections()
     connect(ui->passwordLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharPassword);
     connect(ui->charLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharName);
     connect(ui->addCharButton, &QPushButton::clicked, this, &MainWindow::addChar);
+    connect(ui->deleteCharButton, &QPushButton::clicked, this, &MainWindow::deleteChar);
 }
 
 // ------------ SLOTS ------------
@@ -64,4 +65,14 @@ void MainWindow::addChar()
     ui->charLineEdit->clear();
 
     ui->statusbar->showMessage("Conta adicionada!", 2000);
+}
+
+void MainWindow::deleteChar()
+{
+    QItemSelectionModel *select = ui->charsTableView->selectionModel();
+    if(select->hasSelection())
+    {
+        QModelIndex selectedIndex = select->selectedRows().first();
+        m_model->deleteCharData(selectedIndex.row());
+    }
 }

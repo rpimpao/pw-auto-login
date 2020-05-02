@@ -28,5 +28,6 @@ private slots:
     void updateCharPassword();
     void updateCharName();
     void addChar();
+    void deleteChar();
 };
 #endif // MAINWINDOW_H
