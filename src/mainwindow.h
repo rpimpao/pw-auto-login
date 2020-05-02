@@ -22,6 +22,7 @@ private:
     Ui::MainWindow *ui;
     CharModel* m_model;
     CharData m_newCharData;
+    QVector<int> m_pidList;
 
 private slots:
     void openFileDialog();
@@ -30,6 +31,7 @@ private slots:
     void updateCharName();
     void addChar();
     void clearForm();
+    void logSelectedChar();
     void deleteChar();
 };
 #endif // MAINWINDOW_H
