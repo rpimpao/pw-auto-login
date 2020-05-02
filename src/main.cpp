@@ -7,6 +7,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
+    QCoreApplication::setOrganizationName("rsp");
+    QCoreApplication::setApplicationName("PW AutoLogin");
     MainWindow w;
     w.show();
     return a.exec();

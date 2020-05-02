@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include "charmodel.h"
 #include "chardata.h"
 
@@ -19,6 +20,9 @@ public:
 
 private:
     void setupConnections();
+    void readSettings();
+    void writeSettings();
+    void closeEvent(QCloseEvent *event);
     Ui::MainWindow *ui;
     CharModel* m_model;
     CharData m_newCharData;

@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QProcess>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->charsTableView->setModel(m_model);
 
     setupConnections();
+    readSettings();
 }
 
 MainWindow::~MainWindow()
@@ -35,6 +37,46 @@ void MainWindow::setupConnections()
     connect(ui->clearFormButton, &QPushButton::clicked, this, &MainWindow::clearForm);
     connect(ui->logCharButton, &QPushButton::clicked, this, &MainWindow::logSelectedChar);
     connect(ui->deleteCharButton, &QPushButton::clicked, this, &MainWindow::deleteChar);
+}
+
+void MainWindow::readSettings()
+{
+    QSettings settings;
+
+    ui->unfreezeCheckbox->setChecked(settings.value("unfreeze", false).toBool());
+    ui->elementClientLineEdit->setText(settings.value("elementClientPath", "").toString());
+
+    int charCount = settings.value("charCount", 0).toInt();
+    for(int i = 0; i < charCount; ++i)
+    {
+        QStringList charInfo = settings.value(QString("char%1").arg(i), QStringList()).toStringList();
+        CharData charData;
+        charData.setAccount(charInfo.at(0));
+        charData.setPassword(charInfo.at(1));
+        charData.setCharName(charInfo.at(2));
+        m_model->pushCharData(charData);
+    }
+}
+
+void MainWindow::writeSettings()
+{
+    QSettings settings;
+
+    settings.setValue("unfreeze", ui->unfreezeCheckbox->isChecked());
+    settings.setValue("elementClientPath", ui->elementClientLineEdit->text());
+
+    int charCount = m_model->rowCount();
+    settings.setValue("charCount", charCount);
+    for(int i = 0; i < charCount; ++i)
+    {
+        settings.setValue(QString("char%1").arg(i), m_model->getCharData(i).toList());
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    writeSettings();
+    event->accept();
 }
 
 // ------------ SLOTS ------------

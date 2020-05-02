@@ -16,6 +16,7 @@ public:
     void setAccount(const QString& account);
     void setPassword(const QString& password);
     void setCharName(const QString& charName);
+    QStringList toList() const;
 private:
     QString m_account;
     QString m_password;
