@@ -30,6 +30,7 @@ void MainWindow::setupConnections()
     connect(ui->passwordLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharPassword);
     connect(ui->charLineEdit, &QLineEdit::editingFinished, this, &MainWindow::updateCharName);
     connect(ui->addCharButton, &QPushButton::clicked, this, &MainWindow::addChar);
+    connect(ui->clearFormButton, &QPushButton::clicked, this, &MainWindow::clearForm);
     connect(ui->deleteCharButton, &QPushButton::clicked, this, &MainWindow::deleteChar);
 }
 
@@ -76,6 +77,14 @@ void MainWindow::addChar()
     ui->charLineEdit->clear();
 
     ui->statusbar->showMessage("Conta adicionada!", 2000);
+}
+
+void MainWindow::clearForm()
+{
+    m_newCharData = CharData();
+    ui->accountLineEdit->clear();
+    ui->passwordLineEdit->clear();
+    ui->charLineEdit->clear();
 }
 
 void MainWindow::deleteChar()
