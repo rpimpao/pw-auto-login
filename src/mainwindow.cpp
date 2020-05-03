@@ -3,6 +3,10 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QSettings>
+#include <QAction>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -37,6 +41,8 @@ void MainWindow::setupConnections()
     connect(ui->clearFormButton, &QPushButton::clicked, this, &MainWindow::clearForm);
     connect(ui->logCharButton, &QPushButton::clicked, this, &MainWindow::logSelectedChar);
     connect(ui->deleteCharButton, &QPushButton::clicked, this, &MainWindow::deleteChar);
+    connect(ui->actionBug, &QAction::triggered, this, &MainWindow::reportBug);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showAbout);
 }
 
 void MainWindow::readSettings()
@@ -171,4 +177,18 @@ void MainWindow::deleteChar()
         QModelIndex selectedIndex = select->selectedRows().first();
         m_model->deleteCharData(selectedIndex.row());
     }
+}
+
+void MainWindow::reportBug()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/sessegolo/pw-auto-login/issues/new"));
+}
+
+void MainWindow::showAbout()
+{
+    QMessageBox::information(
+                this,
+                "About",
+                "Código fonte em https://github.com/sessegolo/pw-auto-login"
+                "\n\nLicença LGPL 3.0");
 }

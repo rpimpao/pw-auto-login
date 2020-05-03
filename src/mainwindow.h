@@ -37,5 +37,7 @@ private slots:
     void clearForm();
     void logSelectedChar();
     void deleteChar();
+    void reportBug();
+    void showAbout();
 };
 #endif // MAINWINDOW_H
