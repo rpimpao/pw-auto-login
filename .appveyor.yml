@@ -40,7 +40,7 @@ artifacts:
     name: PwAutoLogin_%name%.zip
 
 deploy:
-  release: PwAutoLogin_v%APPVEYOR_REPO_TAG_NAME%_%name%
+  tag: $(APPVEYOR_REPO_TAG_NAME)
   description: 'Pw AutoLogin utility'
   provider: GitHub
   auth_token:
