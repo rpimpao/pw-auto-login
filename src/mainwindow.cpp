@@ -189,7 +189,7 @@ void MainWindow::deleteChar()
 
 void MainWindow::reportBug()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/sessegolo/pw-auto-login/issues/new"));
+    QDesktopServices::openUrl(QUrl("https://github.com/rpimpao/pw-auto-login/issues/new"));
 }
 
 void MainWindow::showAbout()
@@ -197,6 +197,6 @@ void MainWindow::showAbout()
     QMessageBox::information(
                 this,
                 "About",
-                "Código fonte em https://github.com/sessegolo/pw-auto-login"
+                "Código fonte em https://github.com/rpimpao/pw-auto-login"
                 "\n\nLicença LGPL 3.0");
 }
