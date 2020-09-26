@@ -89,6 +89,23 @@ bool MainWindow::isElementClientPathSet() {
     return !ui->elementClientLineEdit->text().isEmpty();
 }
 
+void MainWindow::launchClient(const CharData& charData) {
+    QStringList parameters{
+        "startbypatcher",
+        QString("user:%1").arg(charData.getAccount()),
+        QString("pwd:%1").arg(charData.getPassword()),
+        QString("role:%1").arg(charData.getCharName()),
+        ui->unfreezeCheckbox->isChecked() ? QString("rendernofocus") : ""
+    };
+
+    qint64 pid;
+    QProcess* newProc = new QProcess();
+    QString execPath = ui->elementClientLineEdit->text();
+    QFileInfo fileInfo(execPath);
+    newProc->startDetached(execPath, parameters, fileInfo.absolutePath(), &pid);
+    m_pidList.push_back(pid);
+}
+
 // ------------ SLOTS ------------
 void MainWindow::openFileDialog()
 {
@@ -140,23 +157,6 @@ void MainWindow::clearForm()
     ui->accountLineEdit->clear();
     ui->passwordLineEdit->clear();
     ui->charLineEdit->clear();
-}
-
-void MainWindow::launchClient(const CharData& charData) {
-    QStringList parameters{
-        "startbypatcher",
-        QString("user:%1").arg(charData.getAccount()),
-        QString("pwd:%1").arg(charData.getPassword()),
-        QString("role:%1").arg(charData.getCharName()),
-        ui->unfreezeCheckbox->isChecked() ? QString("rendernofocus") : ""
-    };
-
-    qint64 pid;
-    QProcess* newProc = new QProcess();
-    QString execPath = ui->elementClientLineEdit->text();
-    QFileInfo fileInfo(execPath);
-    newProc->startDetached(execPath, parameters, fileInfo.absolutePath(), &pid);
-    m_pidList.push_back(pid);
 }
 
 void MainWindow::logSelectedChar()
