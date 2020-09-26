@@ -7,6 +7,9 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QMessageBox>
+#include <functional>
+#include <thread>
+#include <chrono>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,6 +44,7 @@ void MainWindow::setupConnections()
     connect(ui->clearFormButton, &QPushButton::clicked, this, &MainWindow::clearForm);
     connect(ui->logCharButton, &QPushButton::clicked, this, &MainWindow::logSelectedChar);
     connect(ui->deleteCharButton, &QPushButton::clicked, this, &MainWindow::deleteChar);
+    connect(ui->logAllCharsButton, &QPushButton::clicked, this, &MainWindow::logAllChars);
     connect(ui->actionBug, &QAction::triggered, this, &MainWindow::reportBug);
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::showAbout);
 }
@@ -184,6 +188,33 @@ void MainWindow::deleteChar()
     {
         QModelIndex selectedIndex = select->selectedRows().first();
         m_model->deleteCharData(selectedIndex.row());
+    }
+}
+
+void MainWindow::logAllChars()
+{
+    if(!isElementClientPathSet())
+    {
+        ui->statusbar->showMessage("Caminho do ELEMENTCLIENT não informado!", 2000);
+        return;
+    }
+
+    int charCount = m_model->rowCount();
+    for(int i = 0; i < charCount; ++i)
+    {
+        const CharData &data = m_model->getCharData(i);
+
+        // Bind the launchClient function with the current char's data
+        auto threadFunc = std::bind(&MainWindow::launchClient, this, data);
+
+        std::thread launchClientThread([&threadFunc]() {
+            threadFunc();
+            // Add a delay after launching the client to avoid system hiccups
+            std::this_thread::sleep_for(std::chrono::milliseconds(1300));
+        });
+
+        // Wait the thread to finish
+        launchClientThread.join();
     }
 }
 

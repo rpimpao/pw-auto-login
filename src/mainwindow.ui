@@ -149,6 +149,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="logAllCharsButton">
+          <property name="text">
+           <string>Logar todos</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QCheckBox" name="unfreezeCheckbox">
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Evita que a renderização pare quando a janela perde o foco.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Atenção:&lt;/span&gt; Aumenta a utilização de CPU/GPU!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

@@ -39,6 +39,7 @@ private slots:
     void clearForm();
     void logSelectedChar();
     void deleteChar();
+    void logAllChars();
     void reportBug();
     void showAbout();
 };
