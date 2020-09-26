@@ -85,6 +85,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
+bool MainWindow::isElementClientPathSet() {
+    return !ui->elementClientLineEdit->text().isEmpty();
+}
+
 // ------------ SLOTS ------------
 void MainWindow::openFileDialog()
 {
@@ -138,9 +142,26 @@ void MainWindow::clearForm()
     ui->charLineEdit->clear();
 }
 
+void MainWindow::launchClient(const CharData& charData) {
+    QStringList parameters{
+        "startbypatcher",
+        QString("user:%1").arg(charData.getAccount()),
+        QString("pwd:%1").arg(charData.getPassword()),
+        QString("role:%1").arg(charData.getCharName()),
+        ui->unfreezeCheckbox->isChecked() ? QString("rendernofocus") : ""
+    };
+
+    qint64 pid;
+    QProcess* newProc = new QProcess();
+    QString execPath = ui->elementClientLineEdit->text();
+    QFileInfo fileInfo(execPath);
+    newProc->startDetached(execPath, parameters, fileInfo.absolutePath(), &pid);
+    m_pidList.push_back(pid);
+}
+
 void MainWindow::logSelectedChar()
 {
-    if(ui->elementClientLineEdit->text().isEmpty())
+    if(!isElementClientPathSet())
     {
         ui->statusbar->showMessage("Caminho do ELEMENTCLIENT não informado!", 2000);
         return;
@@ -152,20 +173,7 @@ void MainWindow::logSelectedChar()
         QModelIndex selectedIndex = select->selectedRows().first();
         const CharData &data = m_model->getCharData(selectedIndex.row());
 
-        QStringList parameters{
-            "startbypatcher",
-            QString("user:%1").arg(data.getAccount()),
-            QString("pwd:%1").arg(data.getPassword()),
-            QString("role:%1").arg(data.getCharName()),
-            ui->unfreezeCheckbox->isChecked() ? QString("rendernofocus") : ""
-        };
-
-        qint64 pid;
-        QProcess* newProc = new QProcess();
-        QString execPath = ui->elementClientLineEdit->text();
-        QFileInfo fileInfo(execPath);
-        newProc->startDetached(execPath, parameters, fileInfo.absolutePath(), &pid);
-        m_pidList.push_back(pid);
+        launchClient(data);
     }
 }
 

@@ -23,6 +23,7 @@ private:
     void readSettings();
     void writeSettings();
     void closeEvent(QCloseEvent *event);
+    bool isElementClientPathSet();
     Ui::MainWindow *ui;
     CharModel* m_model;
     CharData m_newCharData;
@@ -37,6 +38,7 @@ private slots:
     void clearForm();
     void logSelectedChar();
     void deleteChar();
+    void launchClient(const CharData& charData);
     void reportBug();
     void showAbout();
 };
